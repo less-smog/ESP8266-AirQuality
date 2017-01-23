@@ -16,13 +16,13 @@ void setup() {
 }
 
 void loop() {
-  digitalWrite(D0, HIGH);
+  digitalWrite(D0, LOW);
   delayMicroseconds(280);
   int a0 = analogRead(A0);
   delayMicroseconds(40);
-  digitalWrite(D0, LOW);
+  digitalWrite(D0, HIGH);
 
   Serial.println(a0);
 
-  delay(1000);
+  delay(100);
 }
