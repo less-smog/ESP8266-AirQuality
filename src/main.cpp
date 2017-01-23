@@ -1,5 +1,7 @@
 #include <Arduino.h>
 
+ADC_MODE(ADC_TOUT);
+
 void setup() {
   Serial.begin(115200);
   Serial.println("Air Quality Sensor");
