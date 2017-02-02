@@ -1,6 +1,10 @@
 #include <Arduino.h>
+#include <ArduinoJson.h>
+#include "sensors/gp2y10.h"
 
 ADC_MODE(ADC_TOUT);
+
+GP2Y10 sensor_sharp;
 
 void setup() {
   Serial.begin(115200);
@@ -11,18 +15,14 @@ void setup() {
   Serial.print(" commit ");
   Serial.println(GIT_REVISION);
 
-  pinMode(D0, OUTPUT);
-  pinMode(A0, INPUT);
+  sensor_sharp.begin();
 }
 
 void loop() {
-  digitalWrite(D0, LOW);
-  delayMicroseconds(280);
-  int a0 = analogRead(A0);
-  delayMicroseconds(40);
-  digitalWrite(D0, HIGH);
+  StaticJsonBuffer<1024> buffer;
+  JsonObject& root = buffer.createObject();
+  sensor_sharp.report(root);
 
-  Serial.println(a0);
-
-  delay(100);
+  root.printTo(Serial);
+  delay(10000);
 }
