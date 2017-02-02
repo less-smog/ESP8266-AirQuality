@@ -22,8 +22,8 @@ See Instructions.
 * sensor: Plantower PMS3003
 * sensor: Nova Fitness SDS011
 * sensor: Nova Fitness SDS021 (?)
+* feature: a 'hello' callback to indicate the node has been restarted
 * feature: detect other nodes on the network, and advertise via MDNS accordingly
-
 
 #### LICENSE
 
