@@ -1,28 +1,30 @@
 #include <Arduino.h>
 #include <ArduinoJson.h>
 #include "sensors/gp2y10.h"
+#include "sensors/sds011.h"
+
+#define BUFFER_SIZE 1024
 
 ADC_MODE(ADC_TOUT);
 
-GP2Y10 sensor_sharp;
+SDS011 sds011;
 
 void setup() {
   Serial.begin(115200);
-  Serial.println("Air Quality Sensor");
+  Serial.println();
+  Serial.println("less-smog.org Air Quality Sensor");
   Serial.print("Built on ");
   Serial.print(__DATE__);
   Serial.print(__TIME__);
   Serial.print(" commit ");
   Serial.println(GIT_REVISION);
 
-  sensor_sharp.begin();
+  sds011.begin();
 }
 
 void loop() {
-  StaticJsonBuffer<1024> buffer;
+  StaticJsonBuffer<BUFFER_SIZE> buffer;
   JsonObject& root = buffer.createObject();
-  sensor_sharp.report(root);
-
-  root.printTo(Serial);
-  delay(10000);
+  sds011.report(root);
+  Serial.println();
 }
