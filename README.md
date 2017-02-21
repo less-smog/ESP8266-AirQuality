@@ -17,21 +17,22 @@ G  - GND
 #### TODO
 
 * DIY instructions for putting one together yourself
-* feature: MDNS advertising (for easier configuration)
-* feature: Easy WiFi configuration (YellowCanary_MAC_ADDRESS)
-* feature: Reporting over MQTT
-* feature: Reporting over HTTPS (when MQTT is filtered out)
-* feature: OTA updates
-* feature: auto-detect a connected sensor and configure
-* ~~sensor: Sharp GP2Y10~~
-* ~~sensor: HTU21D~~
+* sensor: Nova Fitness SDS011
+* sensor: Nova Fitness SDS021 (?)
 * sensor: Plantower PMS7003
 * sensor: Plantower PMS5003
 * sensor: Plantower PMS3003
-* sensor: Nova Fitness SDS011
-* sensor: Nova Fitness SDS021 (?)
+* feature: auto-detect a connected sensor and configure
+* feature: MDNS advertising (for easier configuration)
+* feature: Easy WiFi configuration (YellowCanary_MAC_ADDRESS)
+* feature: LED air quality indicator
+* ~~feature: Reporting over MQTT~~
+* ~~feature: OTA updates~~
+* ~~sensor: Sharp GP2Y10~~
+* ~~sensor: HTU21D~~
 * ~~feature: a 'hello' callback to indicate the node has been restarted~~
 * feature: detect other nodes on the network, and advertise via MDNS accordingly
+* feature: Reporting over HTTPS (when MQTT is filtered out)
 
 #### LICENSE
 
