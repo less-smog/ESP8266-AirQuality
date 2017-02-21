@@ -7,12 +7,12 @@ details. Based on the immensely popular ESP8266.
 
 See Instructions.
 
-D1 - SDA
-D2 - SCL
-D7 - SDS011 TXD
-D8 - SDS011 RXD
-VU - SDS011 +5V
-G  - GND
+* D1 - SDA
+* D2 - SCL
+* D7 - SDS011 TXD
+* D8 - SDS011 RXD
+* VU - SDS011 +5V
+* G  - GND
 
 #### TODO
 
@@ -28,11 +28,11 @@ G  - GND
 * feature: LED air quality indicator
 * ~~feature: Reporting over MQTT~~
 * ~~feature: OTA updates~~
-* ~~sensor: Sharp GP2Y10~~
 * ~~sensor: HTU21D~~
 * ~~feature: a 'hello' callback to indicate the node has been restarted~~
 * feature: detect other nodes on the network, and advertise via MDNS accordingly
 * feature: Reporting over HTTPS (when MQTT is filtered out)
+* sensor: Sharp GP2Y10
 
 #### LICENSE
 
