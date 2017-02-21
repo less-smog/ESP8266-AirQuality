@@ -5,6 +5,8 @@
 #include <ArduinoJson.h>
 #include <Arduino.h>
 
+#define BUFFER_SIZE 1024
+
 struct sds011_packet_t {
   byte header;
   byte cmd;
@@ -25,12 +27,12 @@ class SDS011 {
   SDS011();
   void begin();
   bool is_operational();
-  bool report(JsonObject &);
+  bool report(JsonObject &, StaticJsonBuffer<BUFFER_SIZE>&);
 
  private:
   bool read_packet(sds011_packet_t *);
-  float pm25();
-  float pm10();
+  float pm25(sds011_packet_t *);
+  float pm10(sds011_packet_t *);
   SoftwareSerial uart;
   unsigned long last_readout;
 };

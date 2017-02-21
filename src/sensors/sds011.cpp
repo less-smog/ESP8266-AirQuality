@@ -2,7 +2,7 @@
 
 bool sds011_valid_packet(sds011_packet_t *pkt) {
   if (pkt->header != '\xaa' || pkt->tail != '\xab') return false;
-  
+
   byte checksum = pkt->pm25lo + pkt->pm25hi + pkt->pm10lo + pkt->pm10hi + pkt->id1 + pkt->id2;
   return checksum == pkt->checksum;
 }
@@ -23,9 +23,16 @@ bool SDS011::is_operational() {
   return sds011_valid_packet(&packet);
 }
 
-bool SDS011::report(JsonObject &parent) {
-  Serial.println(pm10());
-  Serial.println(pm25());
+bool SDS011::report(JsonObject &parent, StaticJsonBuffer<BUFFER_SIZE> &buffer) {
+  sds011_packet_t packet;
+  memset(&packet, 0, sizeof(sds011_packet_t));
+
+  read_packet(&packet);
+
+  parent["pm10"] = pm10(&packet);
+  parent["pm25"] = pm25(&packet);
+
+  return true;
 }
 
 bool SDS011::read_packet(sds011_packet_t *pkt) {
@@ -47,24 +54,10 @@ bool SDS011::read_packet(sds011_packet_t *pkt) {
   return false;
 }
 
-float SDS011::pm25() {
-  delay(1000);
-  sds011_packet_t packet;
-  memset(&packet, 0, sizeof(sds011_packet_t));
-
-  while (!read_packet(&packet));
-
-  return packet.pm25hi * 256 + packet.pm25lo / 10.0;
+float SDS011::pm25(sds011_packet_t *packet) {
+  return packet->pm25hi * 256 + packet->pm25lo / 10.0;
 }
 
-float SDS011::pm10() {
-  delay(1000);
-  sds011_packet_t packet;
-  memset(&packet, 0, sizeof(sds011_packet_t));
-
-  while (!read_packet(&packet));
-
-  return packet.pm10hi * 256 + packet.pm10lo / 10.0;
+float SDS011::pm10(sds011_packet_t *packet) {
+  return packet->pm10hi * 256 + packet->pm10lo / 10.0;
 }
-
-

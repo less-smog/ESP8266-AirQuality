@@ -1,6 +1,5 @@
 #include <Arduino.h>
 #include <ArduinoJson.h>
-#include "sensors/gp2y10.h"
 #include "sensors/sds011.h"
 
 #define BUFFER_SIZE 1024
@@ -25,6 +24,6 @@ void setup() {
 void loop() {
   StaticJsonBuffer<BUFFER_SIZE> buffer;
   JsonObject& root = buffer.createObject();
-  sds011.report(root);
-  Serial.println();
+  sds011.report(root, buffer);
+  root.printTo(Serial);
 }
