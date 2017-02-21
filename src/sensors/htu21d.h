@@ -1,10 +1,9 @@
 #ifndef _HTU21_D
 #define _HTU21_D
 
+#include "const.h"
 #include <ArduinoJson.h>
 #include <Adafruit_HTU21DF.h>
-
-#define BUFFER_SIZE 1024
 
 class HTU21D {
 public:

@@ -1,0 +1,6 @@
+{
+    "wifi_ssid": "linksys",
+    "wifi_pass": "password",
+    "mqtt_server": "mqtt.local",
+    "mqtt_port": 1883
+}

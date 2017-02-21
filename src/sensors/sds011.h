@@ -1,9 +1,10 @@
 #ifndef _SDS011_H
 #define _SDS011_H
 
-#include <SoftwareSerial.h>
-#include <ArduinoJson.h>
+#include "const.h"
 #include <Arduino.h>
+#include <ArduinoJson.h>
+#include <SoftwareSerial.h>
 
 #define BUFFER_SIZE 1024
 

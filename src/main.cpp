@@ -1,15 +1,12 @@
 #include <Arduino.h>
 #include <ArduinoJson.h>
+#include <metering.h>
+#include "const.h"
 #include "sensors/sds011.h"
 #include "sensors/htu21d.h"
 
-#define BUFFER_SIZE 1024
-
-ADC_MODE(ADC_TOUT);
-
 SDS011 sds011;
 HTU21D htu21d;
-
 
 void setup() {
   Serial.begin(115200);
@@ -23,6 +20,10 @@ void setup() {
 
   sds011.begin();
   htu21d.begin();
+
+  network::start("ESP8266-AirQuality");
+  delay(10000);
+  network::hello();
 }
 
 void loop() {
@@ -30,5 +31,15 @@ void loop() {
   JsonObject& root = buffer.createObject();
   sds011.report(root, buffer);
   htu21d.report(root, buffer);
-  root.printTo(Serial);
+
+  String stream;
+  root.printTo(stream);
+  Serial.println(stream);
+  network::report(stream);
+
+  delay(300000);
+}
+
+void messageReceived(String topic, String payload, char * bytes, unsigned int length) {
+  network::mqtt_message_received_cb(topic, payload, bytes, length);
 }
