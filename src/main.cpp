@@ -33,7 +33,7 @@ void setup() {
 
 void loop() {
   network::loop();
-  
+
   StaticJsonBuffer<BUFFER_SIZE> buffer;
   JsonObject& root = buffer.createObject();
   sds011.report(root, buffer);
@@ -44,7 +44,11 @@ void loop() {
   Serial.println(stream);
   network::report(stream);
 
-  delay(300000);
+  int t = 300;
+  while (t--) {
+    network::loop();
+    delay(1000);
+  }
 }
 
 void messageReceived(String topic, String payload, char * bytes, unsigned int length) {
