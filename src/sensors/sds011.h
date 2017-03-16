@@ -14,6 +14,9 @@ class SDS011 {
   void begin();
   bool is_operational();
   bool read();
+  void reset();
+  void sleep();
+  void wake_up();
   bool report(JsonObject &, StaticJsonBuffer<BUFFER_SIZE>&);
 
  private:

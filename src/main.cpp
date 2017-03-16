@@ -44,11 +44,13 @@ void loop() {
   Serial.println(stream);
   network::report(stream);
 
-  int t = 5;
+  sds011.sleep();
+  int t = 300;
   while (t--) {
     network::loop();
     delay(1000);
   }
+  sds011.wake_up();
 }
 
 void messageReceived(String topic, String payload, char * bytes, unsigned int length) {

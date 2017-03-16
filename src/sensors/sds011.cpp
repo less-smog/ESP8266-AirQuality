@@ -40,6 +40,20 @@ bool SDS011::read() {
   return false;
 }
 
+void SDS011::sleep() {
+  char sleepcmd[] = {
+    0xaa, 0xb4, 0x06, 0x01, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00,
+    0xff, 0xff, 0x05, 0xab
+  };
+  if (uart.available()) uart.write(sleepcmd, 19);
+}
+
+void SDS011::wake_up() {
+  if (uart.available()) uart.write(0x01);
+}
+
 // Packet implementation
 
 SDS011::Packet::Packet() {
