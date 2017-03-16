@@ -44,7 +44,7 @@ void loop() {
   Serial.println(stream);
   network::report(stream);
 
-  int t = 300;
+  int t = 5;
   while (t--) {
     network::loop();
     delay(1000);

@@ -8,34 +8,38 @@
 
 #define BUFFER_SIZE 1024
 
-struct sds011_packet_t {
-  byte header;
-  byte cmd;
-  byte pm25lo;
-  byte pm25hi;
-  byte pm10lo;
-  byte pm10hi;
-  byte id1;
-  byte id2;
-  byte checksum;
-  byte tail;
-};
-
-bool sds011_valid_packet(sds011_packet_t *pkt);
-
 class SDS011 {
  public:
   SDS011();
   void begin();
   bool is_operational();
+  bool read();
   bool report(JsonObject &, StaticJsonBuffer<BUFFER_SIZE>&);
 
  private:
-  bool read_packet(sds011_packet_t *);
-  float pm25(sds011_packet_t *);
-  float pm10(sds011_packet_t *);
+   class Packet {
+   public:
+     Packet();
+     bool is_valid();
+     void reset();
+     float pm25();
+     float pm10();
+   private:
+     byte header;
+     byte cmd;
+     byte pm25lo;
+     byte pm25hi;
+     byte pm10lo;
+     byte pm10hi;
+     byte id1;
+     byte id2;
+     byte checksum;
+     byte tail;
+
+     byte calculated_checksum();
+   } packet;
+
   SoftwareSerial uart;
-  unsigned long last_readout;
 };
 
 #endif
