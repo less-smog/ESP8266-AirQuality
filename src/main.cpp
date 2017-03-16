@@ -4,9 +4,11 @@
 #include "const.h"
 #include "sensors/sds011.h"
 #include "sensors/htu21d.h"
+#include "sensors/pms5003.h"
 
 SDS011 sds011;
 HTU21D htu21d;
+PMS5003 pms5003;
 
 void banner() {
   Serial.println();
