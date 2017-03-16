@@ -34,10 +34,14 @@ void setup() {
 void loop() {
   network::loop();
 
-  StaticJsonBuffer<BUFFER_SIZE> buffer;
+  DynamicJsonBuffer buffer;
   JsonObject& root = buffer.createObject();
-  sds011.report(root, buffer);
-  htu21d.report(root, buffer);
+  root["version"] = 1;
+  JsonArray &data = buffer.createArray();
+  root["data"] = data;
+
+  sds011.report(data, buffer);
+  htu21d.report(data, buffer);
 
   String stream;
   root.printTo(stream);

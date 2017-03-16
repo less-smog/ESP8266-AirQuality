@@ -10,7 +10,7 @@ public:
   HTU21D();
   void begin();
   bool is_operational();
-  bool report(JsonObject &, StaticJsonBuffer<BUFFER_SIZE>&);
+  bool report(JsonArray &, DynamicJsonBuffer &);
 private:
   Adafruit_HTU21DF sensor;
 };

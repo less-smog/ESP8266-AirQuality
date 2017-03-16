@@ -6,8 +6,6 @@
 #include <ArduinoJson.h>
 #include <SoftwareSerial.h>
 
-#define BUFFER_SIZE 1024
-
 class SDS011 {
  public:
   SDS011();
@@ -17,7 +15,7 @@ class SDS011 {
   void reset();
   void sleep();
   void wake_up();
-  bool report(JsonObject &, StaticJsonBuffer<BUFFER_SIZE>&);
+  bool report(JsonArray &, DynamicJsonBuffer &);
 
  private:
    class Packet {

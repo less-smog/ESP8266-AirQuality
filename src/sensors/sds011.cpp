@@ -12,10 +12,17 @@ bool SDS011::is_operational() {
   return read();
 }
 
-bool SDS011::report(JsonObject &parent, StaticJsonBuffer<BUFFER_SIZE> &buffer) {
+bool SDS011::report(JsonArray &data, DynamicJsonBuffer &buffer) {
   if (read()) {
-    parent["pm10"] = packet.pm10();
-    parent["pm25"] = packet.pm25();
+    JsonObject &r1 = buffer.createObject();
+    r1["kind"] = "pm25";
+    r1["value"] = packet.pm25();
+    data.add(r1);
+
+    JsonObject &r2 = buffer.createObject();
+    r2["kind"] = "pm10";
+    r2["value"] = packet.pm10();
+    data.add(r2);
     return true;
   } else {
     return false;
