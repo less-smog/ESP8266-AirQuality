@@ -17,7 +17,7 @@ See Instructions.
 #### TODO
 
 * DIY instructions for putting one together yourself
-* sensor: Nova Fitness SDS011
+* ~~sensor: Nova Fitness SDS011~~
 * sensor: Nova Fitness SDS021 (?)
 * sensor: Plantower PMS7003
 * sensor: Plantower PMS5003
