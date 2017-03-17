@@ -55,7 +55,7 @@ private:
     byte _reserved2;
     byte checksum_hi;
     byte checksum_lo;
-  } packet;
+  } __attribute__ ((packed)) packet;
 };
 
 #endif

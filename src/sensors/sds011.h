@@ -38,7 +38,7 @@ class SDS011 {
      byte tail;
 
      byte calculated_checksum();
-   } packet;
+   } __attribute__ ((packed)) packet;
 
   SoftwareSerial uart;
 };
