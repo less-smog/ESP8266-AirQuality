@@ -1,6 +1,7 @@
 #include "sds011.h"
 
 SDS011::SDS011() : uart(D7, D8), packet() {
+  packet.reset();
 }
 
 void SDS011::begin() {
@@ -31,11 +32,11 @@ bool SDS011::report(JsonArray &data, DynamicJsonBuffer &buffer) {
 
 bool SDS011::read() {
   if (!uart.available()) return false;
-  unsigned int attempts = sizeof(SDS011::Packet);
+  unsigned int attempts = sizeof(Packet);
   while (attempts--) {
-    if (uart.peek() == '\xaa') {
+    if (uart.peek() == 0xaa) {
       packet.reset();
-      uart.readBytes((byte*)&packet, sizeof(SDS011::Packet));
+      uart.readBytes((byte*)&packet, sizeof(Packet));
 
       if (packet.is_valid()) {
         return true;
@@ -72,7 +73,7 @@ byte SDS011::Packet::calculated_checksum() {
 }
 
 bool SDS011::Packet::is_valid() {
-  if (header != '\xaa' || tail != '\xab') return false;
+  if (header != 0xaa || tail != 0xab) return false;
   return checksum == calculated_checksum();
 }
 
