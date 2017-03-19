@@ -13,6 +13,8 @@ public:
   void begin();
   bool read();
   bool readUntilSuccessful(int);
+  void sleep();
+  void wake_up();
   bool report(JsonArray &, DynamicJsonBuffer &);
 private:
   SoftwareSerial uart;

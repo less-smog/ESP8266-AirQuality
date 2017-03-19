@@ -65,6 +65,20 @@ bool PMS5003::report(JsonArray &data, DynamicJsonBuffer &buffer) {
   }
 }
 
+void PMS5003::sleep() {
+  char sleepcmd[] = {
+    0x42, 0x4d, 0xe4, 0x00, 0x00, 0x01, 0x73
+  };
+  uart.write(sleepcmd, 7);
+}
+
+void PMS5003::wake_up() {
+  char wakeupcmd[] = {
+    0x42, 0x4d, 0xe4, 0x00, 0x01, 0x01, 0x74
+  };
+  uart.write(wakeupcmd, 7);
+}
+
 // Packet implementation
 
 PMS5003::Packet::Packet() {

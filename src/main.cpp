@@ -55,12 +55,14 @@ void loop() {
   network::report(stream);
 
   sds011.sleep();
+  pms5003.sleep();
   int t = 300;
   while (t--) {
     network::loop();
     delay(1000);
   }
   sds011.wake_up();
+  pms5003.wake_up();
 }
 
 void messageReceived(String topic, String payload, char * bytes, unsigned int length) {
