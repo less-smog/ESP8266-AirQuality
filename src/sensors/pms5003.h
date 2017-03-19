@@ -10,9 +10,11 @@ class PMS5003 {
 public:
   PMS5003();
   bool is_operational();
+  void begin();
   bool read();
   bool report(JsonArray &, DynamicJsonBuffer &);
 private:
+  SoftwareSerial uart;
   class Packet {
   public:
     Packet();
@@ -21,7 +23,7 @@ private:
     float pm1();
     float pm25();
     float pm10();
-  private:
+  //private:
     uint16_t calculated_checksum();
     byte start1;
     byte start2;
