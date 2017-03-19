@@ -27,9 +27,10 @@ void setup() {
 
   sds011.begin();
   htu21d.begin();
+  pms5003.begin();
 
   network::start("ESP8266-AirQuality");
-  delay(10000);
+  delay(5000);
   network::hello();
 }
 
@@ -42,8 +43,11 @@ void loop() {
   JsonArray &data = buffer.createArray();
   root["data"] = data;
 
+  delay(1000);
+
   sds011.report(data, buffer);
   htu21d.report(data, buffer);
+  pms5003.report(data, buffer);
 
   String stream;
   root.printTo(stream);

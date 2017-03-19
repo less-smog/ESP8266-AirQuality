@@ -15,6 +15,8 @@ bool PMS5003::is_operational() {
 bool PMS5003::read() {
   if (!uart.available()) return false;
 
+  // TODO: There may be an easy way to simiplify this by
+  // while read'ing when peek != 42
   unsigned int attempts = sizeof(Packet);
   while (attempts--) {
     if (uart.peek() == 0x42) {
@@ -31,8 +33,36 @@ bool PMS5003::read() {
   return false;
 }
 
-bool PMS5003::report(JsonArray &data, DynamicJsonBuffer &buffer) {
+bool PMS5003::readUntilSuccessful(int tries) {
+  while (tries--) {
+    if (read()) return true;
+    delay(1000);
+  }
+  return false;
+}
 
+bool PMS5003::report(JsonArray &data, DynamicJsonBuffer &buffer) {
+  if (readUntilSuccessful(8)) {
+    JsonObject &r1 = buffer.createObject();
+    r1["kind"] = "pm1";
+    r1["value"] = packet.pm1();
+
+    JsonObject &r2 = buffer.createObject();
+    r2["kind"] = "pm25";
+    r2["value"] = packet.pm25();
+
+    JsonObject &r3 = buffer.createObject();
+    r3["kind"] = "pm10";
+    r3["value"] = packet.pm10();
+
+    data.add(r1);
+    data.add(r2);
+    data.add(r3);
+
+    return true;
+  } else {
+    return false;
+  }
 }
 
 // Packet implementation
@@ -58,4 +88,16 @@ uint16_t PMS5003::Packet::calculated_checksum() {
   byte *t = (byte*)this;
   for (int i = 0; i < sizeof(Packet); i++) sum += t[i];
   return sum - t[len - 1] - t[len - 2];
+}
+
+float PMS5003::Packet::pm1() {
+  return pm1_atm_hi * 256 + pm1_atm_lo;
+}
+
+float PMS5003::Packet::pm10() {
+  return pm10_atm_hi * 256 + pm10_atm_lo;
+}
+
+float PMS5003::Packet::pm25() {
+  return pm25_atm_hi * 256 + pm25_atm_lo;
 }

@@ -12,6 +12,7 @@ public:
   bool is_operational();
   void begin();
   bool read();
+  bool readUntilSuccessful(int);
   bool report(JsonArray &, DynamicJsonBuffer &);
 private:
   SoftwareSerial uart;
