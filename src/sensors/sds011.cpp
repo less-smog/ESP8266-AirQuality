@@ -7,7 +7,7 @@ SDS011::SDS011(SoftwareSerial &_uart) : uart(_uart), packet(), detected(false) {
 bool SDS011::probe() {
   uart.begin(9600);
   wake_up(true);
-  detected = readUntilSuccessful(8);
+  detected = readUntilSuccessful(4);
   uart.end();
   return detected;
 }

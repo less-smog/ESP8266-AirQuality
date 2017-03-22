@@ -8,7 +8,7 @@ bool PMS5003::probe() {
   uart.begin(9600);
   wake_up(true);
   delay(1000);
-  detected = readUntilSuccessful(8);
+  detected = readUntilSuccessful(4);
   uart.end();
   return detected;
 }
@@ -25,11 +25,11 @@ bool PMS5003::read() {
 
   // TODO: There may be an easy way to simiplify this by
   // while read'ing when peek != 42
-  unsigned int attempts = sizeof(Packet);
+  unsigned int attempts = sizeof(PMSPacket);
   while (attempts--) {
     if (uart.peek() == 0x42) {
       packet.reset();
-      uart.readBytes((byte*)&packet, sizeof(Packet));
+      uart.readBytes((byte*)&packet, sizeof(PMSPacket));
 
       if (packet.is_valid()) {
         return true;
@@ -88,41 +88,4 @@ void PMS5003::wake_up(bool force) {
     };
     uart.write(wakeupcmd, 7);
   }
-}
-
-// Packet implementation
-
-PMS5003::Packet::Packet() {
-  reset();
-}
-
-bool PMS5003::Packet::is_valid() {
-  if (start1 != 0x42 || start2 != 0x4d) return false;
-  if (framelen_hi != 0 || framelen_lo != (2 * 13 + 2)) return false;
-  return calculated_checksum() == (checksum_hi * 256 + checksum_lo);
-}
-
-void PMS5003::Packet::reset() {
-  memset(this, 0x0, sizeof(PMS5003::Packet));
-}
-
-uint16_t PMS5003::Packet::calculated_checksum() {
-  // TODO: simplify?
-  uint16_t sum = 0;
-  int len = sizeof(Packet);
-  byte *t = (byte*)this;
-  for (int i = 0; i < sizeof(Packet); i++) sum += t[i];
-  return sum - t[len - 1] - t[len - 2];
-}
-
-float PMS5003::Packet::pm1() {
-  return pm1_atm_hi * 256 + pm1_atm_lo;
-}
-
-float PMS5003::Packet::pm10() {
-  return pm10_atm_hi * 256 + pm10_atm_lo;
-}
-
-float PMS5003::Packet::pm25() {
-  return pm25_atm_hi * 256 + pm25_atm_lo;
 }
