@@ -1,18 +1,26 @@
 #include "pms5003.h"
 
-PMS5003::PMS5003() : uart(D5, D6), packet() {
-  packet.reset();
+PMS5003::PMS5003(SoftwareSerial &_uart) : uart(_uart), packet(), detected(false) {
+  // NOOP
+}
+
+bool PMS5003::probe() {
+  uart.begin(9600);
+  wake_up(true);
+  delay(1000);
+  detected = readUntilSuccessful(8);
+  uart.end();
+  return detected;
 }
 
 void PMS5003::begin() {
+  if (!detected) return;
+
   uart.begin(9600);
 }
 
-bool PMS5003::is_operational() {
-  return read();
-}
-
 bool PMS5003::read() {
+  Serial.printf("available: %d\r\n", uart.available());
   if (!uart.available()) return false;
 
   // TODO: There may be an easy way to simiplify this by
@@ -35,6 +43,7 @@ bool PMS5003::read() {
 
 bool PMS5003::readUntilSuccessful(int tries) {
   while (tries--) {
+    Serial.printf("detecting PMS5003, attempt %d\r\n", tries);
     if (read()) return true;
     delay(1000);
   }
@@ -72,11 +81,13 @@ void PMS5003::sleep() {
   uart.write(sleepcmd, 7);
 }
 
-void PMS5003::wake_up() {
-  char wakeupcmd[] = {
-    0x42, 0x4d, 0xe4, 0x00, 0x01, 0x01, 0x74
-  };
-  uart.write(wakeupcmd, 7);
+void PMS5003::wake_up(bool force) {
+  if (detected || force) {
+    char wakeupcmd[] = {
+      0x42, 0x4d, 0xe4, 0x00, 0x01, 0x01, 0x74
+    };
+    uart.write(wakeupcmd, 7);
+  }
 }
 
 // Packet implementation

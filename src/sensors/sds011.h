@@ -8,16 +8,20 @@
 
 class SDS011 {
  public:
-  SDS011();
+  SDS011(SoftwareSerial &);
+  bool probe();
   void begin();
   bool is_operational();
   bool read();
+  bool readUntilSuccessful(int);
   void reset();
   void sleep();
-  void wake_up();
+  void wake_up(bool force=false);
   bool report(JsonArray &, DynamicJsonBuffer &);
 
  private:
+   bool detected;
+   SoftwareSerial &uart;
    class Packet {
    public:
      Packet();
@@ -39,8 +43,6 @@ class SDS011 {
 
      byte calculated_checksum();
    } __attribute__ ((packed)) packet;
-
-  SoftwareSerial uart;
 };
 
 #endif

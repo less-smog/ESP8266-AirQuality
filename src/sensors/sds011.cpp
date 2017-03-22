@@ -1,16 +1,19 @@
 #include "sds011.h"
 
-SDS011::SDS011() : uart(D7, D8), packet() {
-  packet.reset();
+SDS011::SDS011(SoftwareSerial &_uart) : uart(_uart), packet(), detected(false) {
+  // NOOP
+}
+
+bool SDS011::probe() {
+  uart.begin(9600);
+  wake_up(true);
+  detected = readUntilSuccessful(8);
+  uart.end();
+  return detected;
 }
 
 void SDS011::begin() {
-  // TODO: Consider passing this in
   uart.begin(9600);
-}
-
-bool SDS011::is_operational() {
-  return read();
 }
 
 bool SDS011::report(JsonArray &data, DynamicJsonBuffer &buffer) {
@@ -31,7 +34,7 @@ bool SDS011::report(JsonArray &data, DynamicJsonBuffer &buffer) {
 }
 
 bool SDS011::read() {
-  if (!uart.available()) return false;
+  if (uart.available() == 0) return false;
   unsigned int attempts = sizeof(Packet);
   while (attempts--) {
     if (uart.peek() == 0xaa) {
@@ -48,6 +51,15 @@ bool SDS011::read() {
   return false;
 }
 
+bool SDS011::readUntilSuccessful(int tries) {
+  while (tries--) {
+    Serial.printf("detecting SDS011, attempt %d\r\n", tries);
+    if (read()) return true;
+    delay(1000);
+  }
+  return false;
+}
+
 void SDS011::sleep() {
   char sleepcmd[] = {
     0xaa, 0xb4, 0x06, 0x01, 0x00,
@@ -55,11 +67,11 @@ void SDS011::sleep() {
     0x00, 0x00, 0x00, 0x00, 0x00,
     0xff, 0xff, 0x05, 0xab
   };
-  if (uart.available()) uart.write(sleepcmd, 19);
+  uart.write(sleepcmd, 19);
 }
 
-void SDS011::wake_up() {
-  if (uart.available()) uart.write(0x01);
+void SDS011::wake_up(bool force) {
+  if (detected || force) uart.write(0x01);
 }
 
 // Packet implementation
@@ -78,7 +90,7 @@ bool SDS011::Packet::is_valid() {
 }
 
 void SDS011::Packet::reset() {
-  memset(this, 0x0, sizeof(SDS011::Packet));
+  memset(this, 0x0, sizeof(Packet));
 }
 
 float SDS011::Packet::pm25() {

@@ -6,9 +6,22 @@
 #include "sensors/htu21d.h"
 #include "sensors/pms5003.h"
 
-SDS011 sds011;
+// Environmental sensors
 HTU21D htu21d;
-PMS5003 pms5003;
+
+// PM sensors
+SoftwareSerial uart(D5, D6);
+SDS011 sds011(uart);
+PMS5003 pms5003(uart);
+
+typedef enum {
+  PM_NONE = 0,
+  PM_SDS011,
+  PM_PMS5003
+} PM_Sensor_Type;
+
+PM_Sensor_Type sensor;
+PM_Sensor_Type detectSensor();
 
 void banner() {
   Serial.println();
@@ -25,13 +38,24 @@ void setup() {
   Serial.begin(115200);
   banner();
 
-  sds011.begin();
   htu21d.begin();
-  pms5003.begin();
+  sensor = detectSensor();
 
   network::start("ESP8266-AirQuality");
   delay(5000);
   network::hello();
+
+  switch (sensor) {
+    case PM_SDS011:
+      sds011.begin();
+      break;
+    case PM_PMS5003:
+      pms5003.begin();
+      break;
+    default:
+      Serial.println("No PM sensor detected.");
+      while (1);
+  }
 }
 
 void loop() {
@@ -45,24 +69,41 @@ void loop() {
 
   delay(1000);
 
-  sds011.report(data, buffer);
   htu21d.report(data, buffer);
-  pms5003.report(data, buffer);
+
+  switch (sensor) {
+    case PM_SDS011:
+      sds011.report(data, buffer);
+      sds011.sleep();
+      break;
+    case PM_PMS5003:
+      pms5003.report(data, buffer);
+      pms5003.sleep();
+      break;
+    default:
+      Serial.println("This should never happen.");
+      while(1);
+  }
 
   String stream;
   root.printTo(stream);
   Serial.println(stream);
   network::report(stream);
 
-  sds011.sleep();
-  pms5003.sleep();
-  int t = 300;
+  int t = 10;
   while (t--) {
     network::loop();
     delay(1000);
   }
+
   sds011.wake_up();
   pms5003.wake_up();
+}
+
+PM_Sensor_Type detectSensor() {
+  if (sds011.probe()) return PM_SDS011;
+  if (pms5003.probe()) return PM_PMS5003;
+  return PM_NONE;
 }
 
 void messageReceived(String topic, String payload, char * bytes, unsigned int length) {

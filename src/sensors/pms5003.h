@@ -8,16 +8,17 @@
 
 class PMS5003 {
 public:
-  PMS5003();
-  bool is_operational();
+  PMS5003(SoftwareSerial &);
+  bool probe();
   void begin();
   bool read();
   bool readUntilSuccessful(int);
   void sleep();
-  void wake_up();
+  void wake_up(bool force=false);
   bool report(JsonArray &, DynamicJsonBuffer &);
 private:
-  SoftwareSerial uart;
+  bool detected;
+  SoftwareSerial &uart;
   class Packet {
   public:
     Packet();
@@ -26,7 +27,7 @@ private:
     float pm1();
     float pm25();
     float pm10();
-  //private:
+  private:
     uint16_t calculated_checksum();
     byte start1;
     byte start2;
