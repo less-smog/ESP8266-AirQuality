@@ -41,7 +41,7 @@ void setup() {
   htu21d.begin();
   sensor = detectSensor();
 
-  network::start("ESP8266-AirQuality");
+  network::start("ESP8266-AirQuality", true);
   delay(5000);
   network::hello();
 

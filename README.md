@@ -18,6 +18,7 @@ See Instructions.
 
 * DIY instructions for putting one together yourself
 * feature: auto-detect a connected sensor and configure
+* feature: report detected sensor during hello
 * feature: MDNS advertising (for easier configuration)
 * feature: Easy WiFi configuration (YellowCanary_MAC_ADDRESS)
 * feature: LED air quality indicator
