@@ -1,4 +1,4 @@
-# ESP8266-AirQuality
+# ESP8266-AirQuality ![travis icon](https://api.travis-ci.org/less-smog/ESP8266-AirQuality.svg?branch=master)
 
 Multi-sensor DIY air quality gathering and reporting node. See the [Less Smog](http://less-smog.org) project for more
 details. Based on the immensely popular ESP8266.
