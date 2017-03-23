@@ -20,7 +20,6 @@ void PMS5003::begin() {
 }
 
 bool PMS5003::read() {
-  Serial.printf("available: %d\r\n", uart.available());
   if (!uart.available()) return false;
 
   // TODO: There may be an easy way to simiplify this by
@@ -43,7 +42,6 @@ bool PMS5003::read() {
 
 bool PMS5003::readUntilSuccessful(int tries) {
   while (tries--) {
-    Serial.printf("detecting PMS5003, attempt %d\r\n", tries);
     if (read()) return true;
     delay(1000);
   }

@@ -90,7 +90,7 @@ void loop() {
   Serial.println(stream);
   network::report(stream);
 
-  int t = 10;
+  int t = 300;
   while (t--) {
     network::loop();
     delay(1000);

@@ -53,7 +53,6 @@ bool SDS011::read() {
 
 bool SDS011::readUntilSuccessful(int tries) {
   while (tries--) {
-    Serial.printf("detecting SDS011, attempt %d\r\n", tries);
     if (read()) return true;
     delay(1000);
   }
