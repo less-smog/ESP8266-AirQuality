@@ -24,7 +24,7 @@ bool HTU21D::report(JsonArray &data, DynamicJsonBuffer &buffer) {
   data.add(r1);
 
   JsonObject &r2 = buffer.createObject();
-  r2["kind"] = "h";
+  r2["kind"] = "rh";
   r2["value"] = h;
   data.add(r2);
 
