@@ -1,4 +1,4 @@
-# ESP8266-AirQuality ![travis icon](https://api.travis-ci.org/less-smog/ESP8266-AirQuality.svg?branch=master)
+# ESP8266-AirQuality [![Build Status](https://travis-ci.org/less-smog/ESP8266-AirQuality.svg?branch=master)](https://travis-ci.org/less-smog/ESP8266-AirQuality)
 
 Multi-sensor DIY air quality gathering and reporting node. See the [Less Smog](http://less-smog.org) project for more
 details. Based on the immensely popular [ESP8266](https://en.wikipedia.org/wiki/ESP8266).
@@ -14,14 +14,28 @@ See Instructions.
 * VU - PM Sensor +5V
 * G  - GND
 
-#### TODO
+#### Must have
 
 * DIY instructions for putting one together yourself
-* feature: auto-detect a connected sensor and configure
 * feature: report detected sensor during hello
+* feature: LED air quality indicator
 * feature: MDNS advertising (for easier configuration)
 * feature: Easy WiFi configuration (YellowCanary_MAC_ADDRESS)
-* feature: LED air quality indicator
+* feature: topic for sending diagnostics (errors, etc)
+* feature: be able to tell PMS5003 apart from PMS7003
+* feature: BME280 support
+
+#### Nice to have
+
+* feature: detect other nodes on the network, and advertise via MDNS accordingly
+* feature: Reporting over HTTPS (when MQTT is filtered out)
+* sensor: Sharp GP2Y10
+* sensor: Plantower PMS3003
+* sensor: Nova Fitness SDS021 (?)
+
+#### Done
+
+* ~~feature: auto-detect a connected sensor and configure~~
 * ~~sensor: Nova Fitness SDS011~~
 * ~~sensor: Plantower PMS7003~~
 * ~~sensor: Plantower PMS5003~~
@@ -29,13 +43,7 @@ See Instructions.
 * ~~feature: OTA updates~~
 * ~~sensor: HTU21D~~
 * ~~feature: a 'hello' callback to indicate the node has been restarted~~
-* feature: detect other nodes on the network, and advertise via MDNS accordingly
-* feature: Reporting over HTTPS (when MQTT is filtered out)
-* sensor: Sharp GP2Y10
-* sensor: Plantower PMS3003
-* sensor: Nova Fitness SDS021 (?)
 
 #### LICENSE
 
 TBD
-
