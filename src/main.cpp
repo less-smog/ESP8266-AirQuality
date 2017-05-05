@@ -5,6 +5,7 @@
 #include "sensors/sds011.h"
 #include "sensors/htu21d.h"
 #include "sensors/pms5003.h"
+#include "led.h"
 
 // Environmental sensors
 HTU21D htu21d;
@@ -13,6 +14,9 @@ HTU21D htu21d;
 SoftwareSerial uart(D5, D6);
 SDS011 sds011(uart);
 PMS5003 pms5003(uart);
+
+// LED
+LED led;
 
 typedef enum {
   PM_NONE = 0,
@@ -83,6 +87,13 @@ void loop() {
     default:
       Serial.println("This should never happen.");
       while(1);
+  }
+
+  for (int i = 0; i < data.size(); i++) {
+    JsonObject &o = data[i];
+    if (o["kind"] == "pm25") {
+      led.setValue(o["value"]);
+    }
   }
 
   String stream;
