@@ -18,7 +18,8 @@ See Instructions.
 
 * DIY instructions for putting one together yourself
 * feature: report detected sensor during hello
-* feature: LED air quality indicator
+* bug: handle a case when temp/humidity sensor is not connected
+* feature: channel with sticky messages about firmware versions etc
 * feature: MDNS advertising (for easier configuration)
 * feature: Easy WiFi configuration (YellowCanary_MAC_ADDRESS)
 * feature: topic for sending diagnostics (errors, etc)
@@ -31,10 +32,10 @@ See Instructions.
 * feature: Reporting over HTTPS (when MQTT is filtered out)
 * sensor: Sharp GP2Y10
 * sensor: Plantower PMS3003
-* sensor: Nova Fitness SDS021 (?)
 
 #### Done
 
+* ~~feature: LED air quality indicator~~
 * ~~feature: auto-detect a connected sensor and configure~~
 * ~~sensor: Nova Fitness SDS011~~
 * ~~sensor: Plantower PMS7003~~
