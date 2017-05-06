@@ -1,6 +1,6 @@
 #include "led.h"
 
-LED::LED() : lights(NUM_LEDS, D3, NEO_GRB + NEO_KHZ800) {
+LED::LED() : lights(NUM_LEDS, D3, NEO_GRB + NEO_KHZ400) {
   lights.begin();
 }
 
