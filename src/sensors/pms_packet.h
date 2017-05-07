@@ -4,6 +4,8 @@
 #include <Arduino.h>
 #include <Printable.h>
 
+#define PMS_PACKET_SIZE 32
+
 class PMSPacket : public Printable {
 public:
   PMSPacket();
@@ -13,7 +15,6 @@ public:
   float pm25() const;
   float pm10() const ;
   size_t printTo(Print &p) const;
-private:
   uint16_t calculated_checksum() const;
   byte start1;
   byte start2;

@@ -24,11 +24,11 @@ bool PMS5003::read() {
 
   // TODO: There may be an easy way to simiplify this by
   // while read'ing when peek != 42
-  unsigned int attempts = sizeof(PMSPacket);
+  unsigned int attempts = PMS_PACKET_SIZE;
   while (attempts--) {
     if (uart.peek() == 0x42) {
       packet.reset();
-      uart.readBytes((byte*)&packet, sizeof(PMSPacket));
+      uart.readBytes((byte*)(&packet.start1), PMS_PACKET_SIZE);
 
       if (packet.is_valid()) {
         return true;

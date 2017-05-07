@@ -11,16 +11,15 @@ bool PMSPacket::is_valid() const {
 }
 
 void PMSPacket::reset() {
-  memset(this, 0x0, sizeof(PMSPacket));
+  memset(&this->start1, 0x0, PMS_PACKET_SIZE);
 }
 
 uint16_t PMSPacket::calculated_checksum() const {
   // TODO: simplify?
   uint16_t sum = 0;
-  int len = sizeof(PMSPacket);
-  byte *t = (byte*)this;
-  for (int i = 0; i < sizeof(PMSPacket); i++) sum += t[i];
-  return sum - t[len - 1] - t[len - 2];
+  byte *t = (byte*)(&this->start1);
+  for (int i = 0; i < PMS_PACKET_SIZE; i++) sum += t[i];
+  return sum - t[PMS_PACKET_SIZE - 1] - t[PMS_PACKET_SIZE - 2];
 }
 
 float PMSPacket::pm1() const {
@@ -38,8 +37,9 @@ float PMSPacket::pm25() const {
 size_t PMSPacket::printTo(Print &p) const {
   size_t n = 0;
   n += p.print("[");
-  for (size_t i = 0; i < sizeof(PMSPacket); i++) {
-    n += p.printf("%02x ", ((byte*)this)[i]);
+  byte *f = (byte*)(&this->start1);
+  for (size_t i = 0; i < PMS_PACKET_SIZE; i++) {
+    n += p.printf("%02x ", f[i]);
   }
   n += (this->is_valid() ? p.print("valid") : p.print("invalid"));
   n += p.println("]");
