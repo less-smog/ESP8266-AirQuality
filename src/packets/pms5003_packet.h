@@ -3,8 +3,6 @@
 
 #include "packets/pms_packet_interface.h"
 
-#define PMS5003_PACKET_SIZE 32
-
 class PMS5003Packet : public PMSPacketInterface {
 public:
   PMS5003Packet();
@@ -17,6 +15,7 @@ public:
   size_t readFrom(Stream &s);
 private:
   uint16_t calculated_checksum() const;
+  size_t packet_size() const;
   byte start1;
   byte start2;
   byte framelen_hi;

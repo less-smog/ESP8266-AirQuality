@@ -24,7 +24,7 @@ bool PMS5003::read() {
 
   // TODO: There may be an easy way to simiplify this by
   // while read'ing when peek != 42
-  unsigned int attempts = PMS5003_PACKET_SIZE;
+  unsigned int attempts = 32;
   while (attempts--) {
     if (uart.peek() == 0x42) {
       packet.reset();

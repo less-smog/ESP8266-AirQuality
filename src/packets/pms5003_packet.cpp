@@ -11,15 +11,15 @@ bool PMS5003Packet::is_valid() const {
 }
 
 void PMS5003Packet::reset() {
-  memset(&this->start1, 0x0, PMS5003_PACKET_SIZE);
+  memset(&this->start1, 0x0, packet_size());
 }
 
 uint16_t PMS5003Packet::calculated_checksum() const {
   // TODO: simplify?
   uint16_t sum = 0;
   byte *t = (byte*)(&this->start1);
-  for (int i = 0; i < PMS5003_PACKET_SIZE; i++) sum += t[i];
-  return sum - t[PMS5003_PACKET_SIZE - 1] - t[PMS5003_PACKET_SIZE - 2];
+  for (int i = 0; i < packet_size(); i++) sum += t[i];
+  return sum - t[packet_size() - 1] - t[packet_size() - 2];
 }
 
 float PMS5003Packet::pm1() const {
@@ -38,7 +38,7 @@ size_t PMS5003Packet::printTo(Print &p) const {
   size_t n = 0;
   n += p.print("[");
   byte *f = (byte*)(&this->start1);
-  for (size_t i = 0; i < PMS5003_PACKET_SIZE; i++) {
+  for (size_t i = 0; i < packet_size(); i++) {
     n += p.printf("%02x ", f[i]);
   }
   n += (this->is_valid() ? p.print("valid") : p.print("invalid"));
@@ -47,5 +47,9 @@ size_t PMS5003Packet::printTo(Print &p) const {
 }
 
 size_t PMS5003Packet::readFrom(Stream &s) {
-  return s.readBytes((byte*)(&this->start1), PMS5003_PACKET_SIZE);
+  return s.readBytes((byte*)(&this->start1), packet_size());
+}
+
+size_t PMS5003Packet::packet_size() const {
+  return 32;
 }
