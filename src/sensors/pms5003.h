@@ -6,7 +6,7 @@
 #include <ArduinoJson.h>
 #include <SoftwareSerial.h>
 
-#include "packets/pms_packet.h"
+#include "packets/pms5003_packet.h"
 
 class PMS5003 {
 public:
@@ -21,7 +21,7 @@ public:
 private:
   bool detected;
   SoftwareSerial &uart;
-  PMSPacket packet;
+  PMS5003Packet packet;
 };
 
 #endif

@@ -1,14 +1,14 @@
-#ifndef _PMS_PACKET_H
-#define _PMS_PACKET_H
+#ifndef _PMS5003_PACKET_H
+#define _PMS5003_PACKET_H
 
 #include <Arduino.h>
 #include <Printable.h>
 
-#define PMS_PACKET_SIZE 32
+#define PMS5003_PACKET_SIZE 32
 
-class PMSPacket : public Printable {
+class PMS5003Packet : public Printable {
 public:
-  PMSPacket();
+  PMS5003Packet();
   bool is_valid() const;
   void reset();
   float pm1() const;
