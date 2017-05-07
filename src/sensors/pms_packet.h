@@ -7,14 +7,14 @@
 class PMSPacket : public Printable {
 public:
   PMSPacket();
-  bool is_valid();
+  bool is_valid() const;
   void reset();
-  float pm1();
-  float pm25();
-  float pm10();
+  float pm1() const;
+  float pm25() const;
+  float pm10() const ;
   size_t printTo(Print &p) const;
 private:
-  uint16_t calculated_checksum();
+  uint16_t calculated_checksum() const;
   byte start1;
   byte start2;
   byte framelen_hi;
