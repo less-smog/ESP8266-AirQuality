@@ -6,7 +6,7 @@
 #include <ArduinoJson.h>
 #include <SoftwareSerial.h>
 
-#include "pms_packet.h"
+#include "packets/pms_packet.h"
 
 class PMS5003 {
 public:
