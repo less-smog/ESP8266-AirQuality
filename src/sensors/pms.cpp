@@ -1,10 +1,10 @@
-#include "pms5003.h"
+#include "pms.h"
 
-PMS5003::PMS5003(SoftwareSerial &_uart) : uart(_uart), packet(), detected(false) {
+PMS::PMS(SoftwareSerial &_uart) : uart(_uart), packet(), detected(false) {
   // NOOP
 }
 
-bool PMS5003::probe() {
+bool PMS::probe() {
   uart.begin(9600);
   wake_up(true);
   delay(1000);
@@ -13,13 +13,13 @@ bool PMS5003::probe() {
   return detected;
 }
 
-void PMS5003::begin() {
+void PMS::begin() {
   if (!detected) return;
 
   uart.begin(9600);
 }
 
-bool PMS5003::read() {
+bool PMS::read() {
   if (!uart.available()) return false;
 
   // TODO: There may be an easy way to simiplify this by
@@ -40,7 +40,7 @@ bool PMS5003::read() {
   return false;
 }
 
-bool PMS5003::readUntilSuccessful(int tries) {
+bool PMS::readUntilSuccessful(int tries) {
   while (tries--) {
     if (read()) return true;
     delay(1000);
@@ -48,7 +48,7 @@ bool PMS5003::readUntilSuccessful(int tries) {
   return false;
 }
 
-bool PMS5003::report(JsonArray &data, DynamicJsonBuffer &buffer) {
+bool PMS::report(JsonArray &data, DynamicJsonBuffer &buffer) {
   if (readUntilSuccessful(8)) {
     JsonObject &r1 = buffer.createObject();
     r1["kind"] = "pm1";
@@ -72,14 +72,14 @@ bool PMS5003::report(JsonArray &data, DynamicJsonBuffer &buffer) {
   }
 }
 
-void PMS5003::sleep() {
+void PMS::sleep() {
   char sleepcmd[] = {
     0x42, 0x4d, 0xe4, 0x00, 0x00, 0x01, 0x73
   };
   uart.write(sleepcmd, 7);
 }
 
-void PMS5003::wake_up(bool force) {
+void PMS::wake_up(bool force) {
   if (detected || force) {
     char wakeupcmd[] = {
       0x42, 0x4d, 0xe4, 0x00, 0x01, 0x01, 0x74

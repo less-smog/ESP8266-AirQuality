@@ -1,5 +1,5 @@
-#ifndef _PMS5003_H
-#define _PMS5003_H
+#ifndef _PMS_H
+#define _PMS_H
 
 #include "const.h"
 #include <Arduino.h>
@@ -8,9 +8,9 @@
 
 #include "packets/pms5003_packet.h"
 
-class PMS5003 {
+class PMS {
 public:
-  PMS5003(SoftwareSerial &);
+  PMS(SoftwareSerial &);
   bool probe();
   void begin();
   bool read();

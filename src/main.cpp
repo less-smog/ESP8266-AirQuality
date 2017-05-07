@@ -4,7 +4,7 @@
 #include "const.h"
 #include "sensors/sds011.h"
 #include "sensors/htu21d.h"
-#include "sensors/pms5003.h"
+#include "sensors/pms.h"
 #include "led.h"
 
 // Environmental sensors
@@ -13,7 +13,7 @@ HTU21D htu21d;
 // PM sensors
 SoftwareSerial uart(D5, D6);
 SDS011 sds011(uart);
-PMS5003 pms5003(uart);
+PMS pms5003(uart);
 
 // LED
 LED led;
