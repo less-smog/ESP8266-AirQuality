@@ -1,6 +1,6 @@
 #include "pms.h"
 
-PMS::PMS(SoftwareSerial &_uart) : uart(_uart), packet(), detected(false) {
+PMS::PMS(SoftwareSerial &_uart, PMSPacketInterface &_packet) : uart(_uart), packet(_packet), detected(false) {
   // NOOP
 }
 

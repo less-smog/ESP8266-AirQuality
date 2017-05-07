@@ -5,6 +5,8 @@
 #include "sensors/sds011.h"
 #include "sensors/htu21d.h"
 #include "sensors/pms.h"
+#include "packets/pms5003_packet.h"
+#include "packets/pms3003_packet.h"
 #include "led.h"
 
 // Environmental sensors
@@ -13,7 +15,12 @@ HTU21D htu21d;
 // PM sensors
 SoftwareSerial uart(D5, D6);
 SDS011 sds011(uart);
-PMS pms5003(uart);
+
+PMS5003Packet pkt5003;
+PMS pms5003(uart, pkt5003);
+
+PMS3003Packet pkt3003;
+PMS pms3003(uart, pkt3003);
 
 // LED
 LED led;
@@ -21,6 +28,7 @@ LED led;
 typedef enum {
   PM_NONE = 0,
   PM_SDS011,
+  PM_PMS3003,
   PM_PMS5003
 } PM_Sensor_Type;
 
@@ -53,6 +61,9 @@ void setup() {
     case PM_SDS011:
       sds011.begin();
       break;
+    case PM_PMS3003:
+      pms3003.begin();
+      break;
     case PM_PMS5003:
       pms5003.begin();
       break;
@@ -79,6 +90,10 @@ void loop() {
     case PM_SDS011:
       sds011.report(data, buffer);
       sds011.sleep();
+      break;
+    case PM_PMS3003:
+      pms3003.report(data, buffer);
+      pms3003.sleep();
       break;
     case PM_PMS5003:
       pms5003.report(data, buffer);
@@ -109,6 +124,7 @@ void loop() {
 
   sds011.wake_up();
   pms5003.wake_up();
+  pms3003.wake_up();
 }
 
 PM_Sensor_Type detectSensor() {
@@ -116,8 +132,12 @@ PM_Sensor_Type detectSensor() {
     M_DEBUG("Detected sensor: SDS011");
     return PM_SDS011;
   }
+  if (pms3003.probe()) {
+    M_DEBUG("Detected sensor: PMS1003/3003");
+    return PM_PMS3003;
+  }
   if (pms5003.probe()) {
-    M_DEBUG("Detected sensor: PMS5003 or similar");
+    M_DEBUG("Detected sensor: PMS5003/7003");
     return PM_PMS5003;
   }
   return PM_NONE;

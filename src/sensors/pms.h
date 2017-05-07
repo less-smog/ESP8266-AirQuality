@@ -6,11 +6,11 @@
 #include <ArduinoJson.h>
 #include <SoftwareSerial.h>
 
-#include "packets/pms5003_packet.h"
+#include "packets/pms_packet_interface.h"
 
 class PMS {
 public:
-  PMS(SoftwareSerial &);
+  PMS(SoftwareSerial &, PMSPacketInterface &);
   bool probe();
   void begin();
   bool read();
@@ -21,7 +21,7 @@ public:
 private:
   bool detected;
   SoftwareSerial &uart;
-  PMS5003Packet packet;
+  PMSPacketInterface &packet;
 };
 
 #endif
