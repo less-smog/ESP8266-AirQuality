@@ -9,9 +9,9 @@ class PMSPacketInterface : public Printable {
 public:
   bool is_valid() const;
   void reset();
-  virtual float pm1() const = 0;
-  virtual float pm25() const = 0;
-  virtual float pm10() const = 0;
+  float pm1() const;
+  float pm25() const;
+  float pm10() const;
   size_t printTo(Print&) const;
   size_t readFrom(Stream &s);
   uint16_t calculated_checksum() const;

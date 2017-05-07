@@ -10,6 +10,19 @@ void PMSPacketInterface::reset() {
   memset(&this->start1, 0x0, packet_size());
 }
 
+
+float PMSPacketInterface::pm1() const {
+  return pm1_atm_hi * 256 + pm1_atm_lo;
+}
+
+float PMSPacketInterface::pm10() const {
+  return pm10_atm_hi * 256 + pm10_atm_lo;
+}
+
+float PMSPacketInterface::pm25() const {
+  return pm25_atm_hi * 256 + pm25_atm_lo;
+}
+
 uint16_t PMSPacketInterface::calculated_checksum() const {
   // TODO: simplify?
   uint16_t sum = 0;
