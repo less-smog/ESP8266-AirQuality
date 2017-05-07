@@ -31,10 +31,10 @@ See Instructions.
 * feature: detect other nodes on the network, and advertise via MDNS accordingly
 * feature: Reporting over HTTPS (when MQTT is filtered out)
 * sensor: Sharp GP2Y10
-* sensor: Plantower PMS3003
 
 #### Done
 
+* ~~sensor: Plantower PMS3003~~
 * ~~feature: LED air quality indicator~~
 * ~~feature: auto-detect a connected sensor and configure~~
 * ~~sensor: Nova Fitness SDS011~~
