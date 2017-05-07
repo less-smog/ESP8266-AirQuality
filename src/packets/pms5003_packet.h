@@ -1,13 +1,11 @@
 #ifndef _PMS5003_PACKET_H
 #define _PMS5003_PACKET_H
 
-#include <Arduino.h>
-#include <Printable.h>
-#include <Stream.h>
+#include "packets/pms_packet_interface.h"
 
 #define PMS5003_PACKET_SIZE 32
 
-class PMS5003Packet : public Printable {
+class PMS5003Packet : public PMSPacketInterface {
 public:
   PMS5003Packet();
   bool is_valid() const;
