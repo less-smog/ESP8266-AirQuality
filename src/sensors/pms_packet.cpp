@@ -34,3 +34,13 @@ float PMSPacket::pm10() {
 float PMSPacket::pm25() {
   return pm25_atm_hi * 256 + pm25_atm_lo;
 }
+
+size_t PMSPacket::printTo(Print &p) const {
+  size_t n = 0;
+  n += p.print("[");
+  for (size_t i = 0; i < sizeof(PMSPacket); i++) {
+    n += p.printf("%02x ", ((byte*)this)[i]);
+  }
+  n += p.println("]");
+  return n;
+}

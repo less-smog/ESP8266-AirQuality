@@ -2,8 +2,9 @@
 #define _PMS_PACKET_H
 
 #include <Arduino.h>
+#include <Printable.h>
 
-class PMSPacket {
+class PMSPacket : public Printable {
 public:
   PMSPacket();
   bool is_valid();
@@ -11,6 +12,7 @@ public:
   float pm1();
   float pm25();
   float pm10();
+  size_t printTo(Print &p) const;
 private:
   uint16_t calculated_checksum();
   byte start1;
