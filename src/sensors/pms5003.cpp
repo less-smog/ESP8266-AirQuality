@@ -28,7 +28,7 @@ bool PMS5003::read() {
   while (attempts--) {
     if (uart.peek() == 0x42) {
       packet.reset();
-      uart.readBytes((byte*)(&packet.start1), PMS5003_PACKET_SIZE);
+      packet.readFrom(uart);
 
       if (packet.is_valid()) {
         return true;

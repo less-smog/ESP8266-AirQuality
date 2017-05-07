@@ -45,3 +45,7 @@ size_t PMS5003Packet::printTo(Print &p) const {
   n += p.println("]");
   return n;
 }
+
+size_t PMS5003Packet::readFrom(Stream &s) {
+  return s.readBytes((byte*)(&this->start1), PMS5003_PACKET_SIZE);
+}

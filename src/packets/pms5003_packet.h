@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include <Printable.h>
+#include <Stream.h>
 
 #define PMS5003_PACKET_SIZE 32
 
@@ -15,6 +16,8 @@ public:
   float pm25() const;
   float pm10() const ;
   size_t printTo(Print &p) const;
+  size_t readFrom(Stream &s);
+private:
   uint16_t calculated_checksum() const;
   byte start1;
   byte start2;
