@@ -4,23 +4,16 @@
 #include "const.h"
 #include <Adafruit_NeoPixel.h>
 
-static uint32_t Colours[] = {
-  0x009900,
-  0x80ff00,
-  0xffff99,
-  0xffff00,
-  0xffb266,
-  0xff8000,
-  0xff0000,
-  0x990099
-};
-
 class LED {
 public:
   LED();
   void setValue(float);
+  void yellow();
+  static const uint32_t RED = 0xff0000;
+  static const uint32_t YELLOW = 0xffff00;
 private:
   uint32_t mapValue(float);
+  uint32_t hsvToRgb(float, float, float);
   Adafruit_NeoPixel lights;
 };
 
