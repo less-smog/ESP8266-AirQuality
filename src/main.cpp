@@ -8,6 +8,7 @@
 #include "packets/pms5003_packet.h"
 #include "packets/pms3003_packet.h"
 #include "led.h"
+#include "banner.h"
 
 // Environmental sensors
 HTU21D htu21d;
@@ -34,17 +35,6 @@ typedef enum {
 
 PM_Sensor_Type sensor;
 PM_Sensor_Type detectSensor();
-
-void banner() {
-  Serial.println();
-  Serial.println("less-smog.org Air Quality Sensor");
-  Serial.print("Built on ");
-  Serial.print(__DATE__);
-  Serial.print(" ");
-  Serial.print(__TIME__);
-  Serial.print(" commit ");
-  Serial.println(GIT_REVISION);
-}
 
 void setup() {
   Serial.begin(115200);
