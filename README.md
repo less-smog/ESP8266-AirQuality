@@ -23,11 +23,15 @@ See Instructions.
 * feature: MDNS advertising (for easier configuration)
 * feature: Easy WiFi configuration (YellowCanary_MAC_ADDRESS)
 * feature: topic for sending diagnostics (errors, etc)
-* feature: be able to tell PMS5003 apart from PMS7003
 * feature: BME280 support
+
+#### Improvements
+
+* Calculate average & stddev and report
 
 #### Nice to have
 
+* feature: be able to tell PMS5003 apart from PMS7003
 * feature: detect other nodes on the network, and advertise via MDNS accordingly
 * feature: Reporting over HTTPS (when MQTT is filtered out)
 * sensor: Sharp GP2Y10
