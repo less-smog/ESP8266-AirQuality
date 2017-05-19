@@ -14,19 +14,23 @@ bool HTU21D::is_operational() {
 }
 
 bool HTU21D::report(JsonArray &data, DynamicJsonBuffer &buffer) {
-  float t = sensor.readTemperature();
-  float h = sensor.readHumidity();
-  if (isnan(t) || isnan(h)) return false;
+  if (is_operational()) {
+    float t = sensor.readTemperature();
+    float h = sensor.readHumidity();
+    if (isnan(t) || isnan(h)) return false;
 
-  JsonObject &r1 = buffer.createObject();
-  r1["kind"] = "t";
-  r1["value"] = t;
-  data.add(r1);
+    JsonObject &r1 = buffer.createObject();
+    r1["kind"] = "t";
+    r1["value"] = t;
+    data.add(r1);
 
-  JsonObject &r2 = buffer.createObject();
-  r2["kind"] = "rh";
-  r2["value"] = h;
-  data.add(r2);
+    JsonObject &r2 = buffer.createObject();
+    r2["kind"] = "rh";
+    r2["value"] = h;
+    data.add(r2);
 
-  return true;
+    return true;
+  } else {
+    return false;
+  }
 }

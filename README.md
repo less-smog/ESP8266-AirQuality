@@ -18,7 +18,6 @@ See Instructions.
 
 * DIY instructions for putting one together yourself
 * feature: report detected sensor during hello
-* bug: handle a case when temp/humidity sensor is not connected
 * feature: channel with sticky messages about firmware versions etc
 * feature: MDNS advertising (for easier configuration)
 * feature: Easy WiFi configuration (YellowCanary_MAC_ADDRESS)
@@ -38,6 +37,7 @@ See Instructions.
 
 #### Done
 
+* ~~bug: handle a case when temp/humidity sensor is not connected~~
 * ~~sensor: Plantower PMS3003~~
 * ~~feature: LED air quality indicator~~
 * ~~feature: auto-detect a connected sensor and configure~~
