@@ -2,6 +2,7 @@
 #define _PMS_H
 
 #include "const.h"
+#include "stats.h"
 #include <Arduino.h>
 #include <ArduinoJson.h>
 #include <SoftwareSerial.h>

@@ -50,15 +50,23 @@ bool PMS::readUntilSuccessful(int tries) {
 
 bool PMS::report(JsonArray &data, DynamicJsonBuffer &buffer) {
   byte samples = 30;
-  float pm1sum, pm25sum, pm10sum;
-  pm1sum = pm25sum = pm10sum = 0;
+  float pm1[samples],
+        pm25[samples],
+        pm10[samples];
+
+  for (byte i = 0; i < samples; i++) {
+    pm1[i] = NAN;
+    pm25[i] = NAN;
+    pm10[i] = NAN;
+  }
+
   byte errors = 0;
 
   for (byte i = 0; i < samples; i++) {
     if (readUntilSuccessful(8)) {
-      pm1sum += packet.pm1();
-      pm25sum += packet.pm25();
-      pm10sum += packet.pm10();
+      pm1[i] = packet.pm1();
+      pm25[i] = packet.pm25();
+      pm10[i] = packet.pm10();
     } else {
       errors++;
     }
@@ -68,15 +76,18 @@ bool PMS::report(JsonArray &data, DynamicJsonBuffer &buffer) {
 
   JsonObject &r1 = buffer.createObject();
   r1["kind"] = "pm1";
-  r1["value"] = pm1sum / (samples - errors);
+  r1["value"] = avg(pm1, samples);
+  r1["sd"] = sd(pm1, samples);
 
   JsonObject &r2 = buffer.createObject();
   r2["kind"] = "pm25";
-  r2["value"] = pm25sum / (samples - errors);
+  r2["value"] = avg(pm25, samples);
+  r2["sd"] = sd(pm25, samples);
 
   JsonObject &r3 = buffer.createObject();
   r3["kind"] = "pm10";
-  r3["value"] = pm10sum / (samples - errors);
+  r3["value"] = avg(pm10, samples);
+  r3["sd"] = sd(pm10, samples);
 
   data.add(r1);
   data.add(r2);
