@@ -118,10 +118,6 @@ void loop() {
 }
 
 PM_Sensor_Type detectSensor() {
-  if (sds011.probe()) {
-    M_DEBUG("Detected sensor: SDS011");
-    return PM_SDS011;
-  }
   if (pms3003.probe()) {
     M_DEBUG("Detected sensor: PMS1003/3003");
     return PM_PMS3003;
@@ -129,6 +125,10 @@ PM_Sensor_Type detectSensor() {
   if (pms5003.probe()) {
     M_DEBUG("Detected sensor: PMS5003/7003");
     return PM_PMS5003;
+  }
+  if (sds011.probe()) {
+    M_DEBUG("Detected sensor: SDS011");
+    return PM_SDS011;
   }
   return PM_NONE;
 }
