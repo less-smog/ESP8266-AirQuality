@@ -132,7 +132,3 @@ PM_Sensor_Type detectSensor() {
   }
   return PM_NONE;
 }
-
-void messageReceived(String topic, String payload, char * bytes, unsigned int length) {
-  network::mqtt_message_received_cb(topic, payload, bytes, length);
-}
