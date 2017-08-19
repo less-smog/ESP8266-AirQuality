@@ -6,8 +6,8 @@
 class PMS5003Packet : public PMSPacketInterface {
 public:
   PMS5003Packet();
-  bool is_valid() const;
-  size_t packet_size() const;
+  virtual bool is_valid() const;
+  virtual size_t packet_size() const;
 
   byte np3_hi; // Data7 indicates the number of particles with diameter beyond 0.3 um in 0.1 L of air.
   byte np3_lo;

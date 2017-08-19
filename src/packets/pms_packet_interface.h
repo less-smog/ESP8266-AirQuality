@@ -7,7 +7,7 @@
 
 class PMSPacketInterface : public Printable {
 public:
-  bool is_valid() const;
+  virtual bool is_valid() const;
   void reset();
   float pm1() const;
   float pm25() const;
