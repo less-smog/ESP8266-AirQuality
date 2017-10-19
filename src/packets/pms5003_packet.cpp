@@ -5,8 +5,9 @@ PMS5003Packet::PMS5003Packet() {
 }
 
 bool PMS5003Packet::is_valid() const {
-  return PMSPacketInterface::is_valid() ||
-    (calculated_checksum() == (checksum_hi * 256 + checksum_lo));
+  if (!PMSPacketInterface::is_valid()) return false;
+  if (calculated_checksum() != (checksum_hi * 256 + checksum_lo)) return false;
+  return true;
 }
 
 size_t PMS5003Packet::packet_size() const {
