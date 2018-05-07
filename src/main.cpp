@@ -2,8 +2,8 @@
 #include <ArduinoJson.h>
 #include <metering.h>
 #include "const.h"
+#include "sensors/environmental.h"
 #include "sensors/sds011.h"
-#include "sensors/htu21d.h"
 #include "sensors/pms.h"
 #include "packets/pms5003_packet.h"
 #include "packets/pms3003_packet.h"
@@ -11,7 +11,7 @@
 #include "banner.h"
 
 // Environmental sensors
-HTU21D htu21d;
+Environmental env_sensor;
 
 // PM sensors
 SoftwareSerial uart(D5, D6);
@@ -40,7 +40,13 @@ void setup() {
   Serial.begin(115200);
   banner();
 
-  htu21d.begin();
+  env_sensor.begin();
+  if (env_sensor.is_operational()) {
+    Serial.println("Environmental sensor detected.");
+  } else {
+    Serial.println("NO environmental sensor detected");
+  }
+
   sensor = detectSensor();
 
   network::start("ESP8266-AirQuality", true);
@@ -74,7 +80,7 @@ void loop() {
 
   delay(1000);
 
-  htu21d.report(data, buffer);
+  env_sensor.report(data, buffer);
 
   switch (sensor) {
     case PM_SDS011:
