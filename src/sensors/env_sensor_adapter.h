@@ -4,7 +4,7 @@
 #include "const.h"
 #include <ArduinoJson.h>
 #include <Adafruit_HTU21DF.h>
-#include <Si7021.h>
+#include <SI7021.h>
 
 class EnvSensorAdapter {
 public:
