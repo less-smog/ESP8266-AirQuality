@@ -2,7 +2,7 @@
 #include <ArduinoJson.h>
 #include <metering.h>
 #include "const.h"
-#include "sensors/environmental.h"
+#include "sensors/env_sensor_adapter.h"
 #include "sensors/sds011.h"
 #include "sensors/pms.h"
 #include "packets/pms5003_packet.h"
@@ -11,7 +11,7 @@
 #include "banner.h"
 
 // Environmental sensors
-Environmental env_sensor;
+EnvSensorAdapter sensor_adapter;
 
 // PM sensors
 SoftwareSerial uart(D5, D6);
@@ -40,12 +40,9 @@ void setup() {
   Serial.begin(115200);
   banner();
 
-  env_sensor.begin();
-  if (env_sensor.is_operational()) {
-    Serial.println("Environmental sensor detected.");
-  } else {
-    Serial.println("NO environmental sensor detected");
-  }
+  sensor_adapter.begin();
+  Serial.print("Environmental sensor: ");
+  Serial.println(sensor_adapter.detected_sensor_kind());
 
   sensor = detectSensor();
 
@@ -80,7 +77,7 @@ void loop() {
 
   delay(1000);
 
-  env_sensor.report(data, buffer);
+  sensor_adapter.report(data, buffer);
 
   switch (sensor) {
     case PM_SDS011:

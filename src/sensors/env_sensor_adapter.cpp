@@ -1,8 +1,8 @@
-#include "environmental.h"
+#include "env_sensor_adapter.h"
 
-Environmental::Environmental() { }
+EnvSensorAdapter::EnvSensorAdapter() : which(0) { }
 
-void Environmental::begin() {
+void EnvSensorAdapter::begin() {
   Wire.begin(D1, D2);
   if (htu21d.begin()) {
     which = 1;
@@ -14,11 +14,11 @@ void Environmental::begin() {
   }
 }
 
-bool Environmental::is_operational() {
+bool EnvSensorAdapter::is_operational() {
   return which > 0;
 }
 
-bool Environmental::report(ArduinoJson::JsonArray &data, ArduinoJson::DynamicJsonBuffer &buffer) {
+bool EnvSensorAdapter::report(ArduinoJson::JsonArray &data, ArduinoJson::DynamicJsonBuffer &buffer) {
   if (!is_operational()) return false;
   JsonObject &r1 = buffer.createObject();
   r1["kind"] = "t";
@@ -49,4 +49,12 @@ bool Environmental::report(ArduinoJson::JsonArray &data, ArduinoJson::DynamicJso
   }
 
   return (isnan(t) && isnan(h));
+}
+
+String EnvSensorAdapter::detected_sensor_kind() {
+  switch (which) {
+    case 0: return F("None");
+    case 1: return F("HTU21D");
+    case 2: return F("Si7021");
+  }
 }
