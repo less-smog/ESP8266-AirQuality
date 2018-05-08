@@ -39,6 +39,8 @@ PM_Sensor_Type detectSensor();
 void setup() {
   Serial.begin(115200);
   banner();
+  led.begin();
+  return;
 
   sensor_adapter.begin();
   Serial.print("Environmental sensor: ");
@@ -67,6 +69,14 @@ void setup() {
 }
 
 void loop() {
+
+  led.setColor(255, 0, 0);
+  delay(1000);
+  led.setColor(0, 255, 0);
+  delay(1000);
+  led.setColor(0, 0, 255);
+  delay(1000);
+  return;
   network::loop();
 
   DynamicJsonBuffer buffer;

@@ -2,9 +2,8 @@
 #define _LED_H
 
 #include "const.h"
-#include <Adafruit_NeoPixel.h>
 
-static uint32_t Colours[] = {
+static long Colours[] = {
   0x009900,
   0x80ff00,
   0xffff99,
@@ -18,10 +17,10 @@ static uint32_t Colours[] = {
 class LED {
 public:
   LED();
+  void begin();
+  void setColor(int r, int g, int b);
   void setValue(float);
-private:
-  uint32_t mapValue(float);
-  Adafruit_NeoPixel lights;
+  long mapValue(float);
 };
 
 #endif

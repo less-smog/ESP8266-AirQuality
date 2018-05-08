@@ -1,16 +1,59 @@
 #include "led.h"
+#include <c_types.h>
+#include <eagle_soc.h>
+#include <pwm.h>
+#include <Arduino.h>
 
-LED::LED() : lights(NUM_LEDS, D3, NEO_GRB + NEO_KHZ400) {
-  lights.begin();
+#define PWM_CHANNELS 3
+#define PERIOD 500
+
+LED::LED() {
+}
+
+void LED::begin() {
+  pinMode(13, OUTPUT);
+  pinMode(15, OUTPUT);
+  pinMode(5, OUTPUT);
+  digitalWrite(13, 0);
+  digitalWrite(15, 0);
+  digitalWrite(5, 0);
+  // PWM setup
+  uint32_t io_info[PWM_CHANNELS][3] = {
+  	{PERIPHS_IO_MUX_MTCK_U,  FUNC_GPIO13, 13},
+  	{PERIPHS_IO_MUX_MTDO_U,  FUNC_GPIO15, 15},
+    {PERIPHS_IO_MUX_GPIO5_U, FUNC_GPIO5, 5},
+  };
+
+  // initial duty: all off
+  uint32 pwm_duty_init[PWM_CHANNELS] = {0,0,0};
+
+  pwm_init(PERIOD, pwm_duty_init, PWM_CHANNELS, io_info);
+  pwm_start();
+  pwm_set_period(PERIOD);
 }
 
 void LED::setValue(float v) {
-  uint32_t colour = mapValue(v);
-  for (int i = 0; i < NUM_LEDS; i++) lights.setPixelColor(i, colour);
-  lights.show();
+  long colour = mapValue(v);
+  int r = ((colour & 0xff0000) >> 16) * PERIOD;
+  int g = ((colour & 0x00ff00) >> 8) * PERIOD;
+  int b = (colour & 0x0000ff) * PERIOD;
+  pwm_set_duty(r / PERIOD, 0);
+  pwm_set_duty(g / PERIOD, 1);
+  pwm_set_duty(b / PERIOD, 2);
+  pwm_start();
 }
 
-uint32_t LED::mapValue(float v) {
+void LED::setColor(int r, int g, int b) {
+  r *= PERIOD; r /= 256;
+  g *= PERIOD; g /= 256;
+  b *= PERIOD; b /= 256;
+  pwm_set_duty(r, 0);
+  pwm_set_duty(g, 1);
+  pwm_set_duty(b, 2);
+  pwm_start();
+}
+
+long LED::mapValue(float v) {
   if (v <= 10) return Colours[0];
   if (v <= 20) return Colours[1];
   if (v <= 30) return Colours[2];
