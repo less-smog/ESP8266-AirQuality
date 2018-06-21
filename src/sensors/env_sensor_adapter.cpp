@@ -3,12 +3,12 @@
 EnvSensorAdapter::EnvSensorAdapter() : which(0) { }
 
 void EnvSensorAdapter::begin() {
-  Wire.begin(D1, D2);
+  Wire.begin(D4, D3);
   if (htu21d.begin()) {
     which = 1;
     return;
   }
-  if (si7021.begin(D1, D2)) {
+  if (si7021.begin(D4, D3)) {
     which = 2;
     return;
   }

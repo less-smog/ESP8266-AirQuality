@@ -43,6 +43,48 @@ void LED::setValue(float v) {
   pwm_start();
 }
 
+void LED::setHSV(int h) {
+  float s, v;
+  s = v = 1;
+  float hf = h / 60.0;
+  int i = floor(hf);
+  float f = hf - i;
+
+  float rr, gg, bb;
+
+  float pv = v * (1 - s);
+  float qv = v * (1 - s * f);
+  float tv = v * (1 - s * (1 - f));
+
+  switch (i) {
+    case 0:
+      rr = v; gg = tv; bb = pv;
+      break;
+    case 1:
+      rr = qv; gg = v; bb = pv;
+      break;
+    case 2:
+      rr = pv; gg = v; bb = tv;
+      break;
+    case 3:
+      rr = pv; gg = qv; bb = v;
+      break;
+    case 4:
+      rr = tv; gg = pv; bb = v;
+      break;
+    case 5:
+      rr = v; gg = pv; bb = qv;
+      break;
+    case 6:
+      rr = v; gg = tv; bb = pv;
+  }
+
+  int r = rr * 255;
+  int g = gg * 255;
+  int b = bb * 255;
+  setColor(r, g, b);
+}
+
 void LED::setColor(int r, int g, int b) {
   r *= PERIOD; r /= 256;
   g *= PERIOD; g /= 256;

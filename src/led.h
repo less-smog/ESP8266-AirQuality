@@ -21,6 +21,7 @@ public:
   void setColor(int r, int g, int b);
   void setValue(float);
   long mapValue(float);
+  void setHSV(int h);
 };
 
 #endif

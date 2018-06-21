@@ -40,11 +40,11 @@ void setup() {
   Serial.begin(115200);
   banner();
   led.begin();
-  return;
 
   sensor_adapter.begin();
   Serial.print("Environmental sensor: ");
   Serial.println(sensor_adapter.detected_sensor_kind());
+  return;
 
   sensor = detectSensor();
 
@@ -70,12 +70,14 @@ void setup() {
 
 void loop() {
 
-  led.setColor(255, 0, 0);
-  delay(1000);
-  led.setColor(0, 255, 0);
-  delay(1000);
-  led.setColor(0, 0, 255);
-  delay(1000);
+  int h = 0;
+  for (;;) {
+    led.setHSV(h);
+    delay(10);
+    h += 1;
+    h %= 360;
+  }
+
   return;
   network::loop();
 
